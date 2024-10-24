@@ -1,5 +1,5 @@
 % Define a function
-function Blatt01-A1()
+function Blatt01_A1()
     % Call the chatgpt function
     chatgpt();
 
