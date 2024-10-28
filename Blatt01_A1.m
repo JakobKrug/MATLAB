@@ -12,7 +12,8 @@ function Blatt01_A1()
     disp(['The result is: ' num2str(y)]);
 
     % Call the test_quadpoly function
-    test_quadpoly(1, 5);
+    test_quadpoly1(5);
+    test_quadpoly2(5);
 end
 
 %Aufgabe 1a
@@ -42,8 +43,8 @@ function y = quadpoly(x, A, b, c)
     y = 0.5 * transpose(x) * A * x + transpose(b) * x + c;
 end
 
-%Aufgabe 1c-d
-function test_quadpoly(dim, cycles)
+%Aufgabe 1c
+function test_quadpoly1(cycles)
     intervall = linspace(-2, 2);
     result = zeros(length(intervall), cycles); % Initialize result matrix
 
@@ -51,13 +52,44 @@ function test_quadpoly(dim, cycles)
         % Initialize temp_result
         temp_result = zeros(size(intervall));
 
-        A = (rand(dim) - 0.5) * 4;
-        b = (rand(dim, 1) - 0.5) * 4;
+        A = (rand(1) - 0.5) * 4;
+        b = (rand(1) - 0.5) * 4;
         c = (rand(1) - 0.5) * 4;
 
         for i = 1:length(intervall)
             x = intervall(i);
             temp_result(i) = quadpoly(x, A, b, c);
+        end
+
+        result(:, j) = temp_result; % Store the results of this cycle
+    end
+    % Create a meshgrid for plotting
+    [X, Y] = meshgrid(1:cycles, intervall);
+    surf(X, Y, result);
+
+    xlabel('Cycle');
+    ylabel('Interval');
+    zlabel('Result of quadpoly');
+    title('Surface plot of Interval vs. Result of quadpoly1 over Cycles');
+
+end
+
+%Aufgabe 1d
+function test_quadpoly2(cycles)
+    intervall = linspace(-2, 2);
+    result = zeros(length(intervall), cycles); % Initialize result matrix
+
+    for j = 1:cycles
+        % Initialize temp_result
+        temp_result = zeros(size(intervall));
+
+        A = (rand(2) - 0.5) * 4;
+        b = (rand(2, 1) - 0.5) * 4;
+        c = (rand(1) - 0.5) * 4;
+
+        for i = 1:length(intervall)
+            x = [intervall(i); intervall(i)]; % Ensure x is a vector
+            temp_result(i) = quadpoly(x, A, b, c); % Ensure quadpoly returns a scalar
         end
 
         result(:, j) = temp_result; % Store the results of this cycle
@@ -70,5 +102,5 @@ function test_quadpoly(dim, cycles)
     xlabel('Cycle');
     ylabel('Interval');
     zlabel('Result of quadpoly');
-    title('Surface plot of Interval vs. Result of quadpoly over Cycles');
+    title('Surface plot of Interval vs. Result of quadpoly2 over Cycles');
 end
