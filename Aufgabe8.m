@@ -58,86 +58,65 @@ end
 
 % compute L*x=Z with lower triangular L for each column in Z
 function X = Linvb(L, Z)
-    n = size(L, 1);
-    m = size(Z, 2);
+    [n, m] = size(Z);
     X = zeros(n, m);
 
     for i = 1:m
         z = Z(:, i);
         x = zeros(n, 1);
-
         for j = 1:n
-
             for k = 1:j - 1
                 z(j) = z(j) - L(j, k) * x(k);
             end
-
             x(j) = z(j) / L(j, j);
         end
-
         X(:, i) = x;
     end
-
 end
 
 % compute L*x=z with lower triangular L for each column in Z
 function X = Linvb2(L, Z)
     [n, m] = size(Z);
     X = zeros(n, m);
-
     for i = 1:m
         z = Z(:, i);
         x = zeros(n, 1);
-
         for j = 1:n
             x(j) = z(j) / L(j, j);
-
             for k = j + 1:n
                 z(k) = z(k) - L(k, j) * x(j);
             end
-
         end
-
         X(:, i) = x;
     end
-
 end
 
 % compute L*x=Z with lower triangular L for each column in Z (vectorized)
 function X = Linvb_Vec(L, Z)
     [n, m] = size(Z);
     X = zeros(n, m);
-
     for i = 1:m
         z = Z(:, i);
         x = zeros(n, 1);
-
         for j = 1:n
             z(j) = z(j) - L(j, 1:j - 1) * x(1:j - 1);
             x(j) = z(j) / L(j, j);
         end
-
         X(:, i) = x;
     end
-
 end
 
 % compute L*x=z with lower triangular L for each column in Z (vectorized)
 function X = Linvb2_Vec(L, Z)
-    n = size(L, 1);
-    m = size(Z, 2);
+    [n, m] = size(Z);
     X = zeros(n, m);
-
     for i = 1:m
         z = Z(:, i);
         x = zeros(n, 1);
-
         for j = 1:n
             x(j) = z(j) / L(j, j);
             z(j + 1:n) = z(j + 1:n) - L(j + 1:n, j) * x(j);
         end
-
         X(:, i) = x;
     end
-
 end
